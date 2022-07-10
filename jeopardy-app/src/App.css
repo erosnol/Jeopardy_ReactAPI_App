@@ -1,38 +1,48 @@
+body{
+  background-image: url(https://s.hdnux.com/photos/01/13/77/35/19920730/3/2400x0.jpg);
+  background-attachment:fixed;
+  background-position: center;
+  height: 100vh;
+}
+
 .App {
-  text-align: center;
+  display: grid;
+  grid-template: 
+  'Header'
+  'Body'
+  'Footer'
+  ;
+
+  grid-template-columns: auto;
+  grid-template-rows: 70px auto 50px ;
+
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.Header {
+display: grid;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.Body {
+  display: grid;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.Footer {
+  display: grid;
+}
+
+.title {
+  display: grid;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  color: rgb(234, 238, 228);
+  grid-area: Header;
+  border-radius: 15px;
+  background-image: linear-gradient(to right, blue ,  rgb(126, 126, 216));
+  width: 500px;
+  height: 50px;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+  align-items: center;
+  justify-self: center;
+  align-self: center;
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

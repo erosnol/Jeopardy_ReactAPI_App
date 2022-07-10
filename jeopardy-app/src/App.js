@@ -1,25 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+import { Component } from 'react';
+import TriviaInfo from './Components/TriviaInfo'
+
+
+class App extends Component {
+  state = {
+    baseURL: 'http://jservice.io/api/random/?',
+    category: '',
+    points: 0,
+    answer: '',
+    searchURL: "",
+    question: null,
+  };
+
+handleChange = (event) => {
+  this.setState({ [event.target.id]: event.target.value })
+}
+
+
+handleSubmit = (e) => {
+  e.preventDefault();
+  this.setState({searchURL: this.state.baseURL + this.state.category + this.state.question + this.state.points + this.state.answer }, () => {
+    fetch(this.state.baseURL)
+    .then(res => res.json())
+    .then(json => this.setState({question: json}))
+  });
+}
+
+
+render() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div className='App'>
+      <div className="title">
+      <h1>Welcome to Jeopardy</h1>
+      </div>
+      <form className="form" onSubmit={this.handleSubmit}>
+        <label htmlFor=""></label>
+      <input type="submit" />
+
+      </form>
+
+      <a href={this.state.searchURL}>{this.state.searchURL}</a>
+
+      {this.state.question && <TriviaInfo question={this.state.question}/>}
+      </div>
+  )
+}
 }
 
 export default App;
