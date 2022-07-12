@@ -2,51 +2,88 @@ import './App.css';
 
 import { Component } from 'react';
 import TriviaInfo from './Components/TriviaInfo'
-
+import Score from './Components/Score'
 
 class App extends Component {
   state = {
-    baseURL: 'http://jservice.io/api/random/?',
-    category: '',
-    points: 0,
-    answer: '',
-    searchURL: "",
-    question: null,
+    baseURL: "http://jservice.io/api/random",
+    score: 0,
+    category: "",
+    value: "",
+    answer: "",
+    question: "",
+    isVisible: false,
   };
 
-handleChange = (event) => {
-  this.setState({ [event.target.id]: event.target.value })
-}
+  handleIncrease = (event) => {
+    event.preventDefault();
+    this.setState({score: this.state.score + this.state.value });
+  };
+
+  handleDecrease = (event) => {
+    event.preventDefault();
+    this.setState({score: this.state.score - this.state.value })
+  }
+
+  handleChange = (event) => {
+    this.setState({ [event.target.id]: event.target.value });
+  };
+
+  handleReveal = (event) => {
+    event.preventDefault();
+    this.setState({ 
+      isVisible: (this.isVisible = !this.isVisible),
+     });
+  };
 
 
-handleSubmit = (e) => {
-  e.preventDefault();
-  this.setState({searchURL: this.state.baseURL + this.state.category + this.state.question + this.state.points + this.state.answer }, () => {
-    fetch(this.state.baseURL)
-    .then(res => res.json())
-    .then(json => this.setState({question: json}))
-  });
-}
+  handlegetQuestion = (event) => {
+    event.preventDefault();
+    this.setState({
+      questionURL: this.state.baseURL,
+      isVisible: false
+    },
+      () => {
+        fetch(this.state.questionURL)
+          .then((res) => res.json())
+          .then(json =>
+            this.setState({
+              category: json[0].category.title,
+              value: json[0].value,
+              answer: json[0].answer,
+              question: json[0].question
+            }))
+      })
+  }
 
+  handleReset = () => {
+    window.location.reload(false);
+  };
 
-render() {
+ render() {
   return (
     <div className='App'>
-      <div className="title">
-      <h1>Welcome to Jeopardy</h1>
-      </div>
-      <form className="form" onSubmit={this.handleSubmit}>
-        <label htmlFor=""></label>
-      <input type="submit" />
+      <h1 className='title'> Welcome to Jeopardy</h1> 
+      
+      <Score 
+      handleDecrease={this.handleDecrease}
+      handleIncrease={this.handleIncrease}
+      handleReset={this.handleReset}
+      score={this.state.score}
+      />
 
-      </form>
+      <TriviaInfo 
+      handlegetQuestion={this.handlegetQuestion}
+      category={this.state.category}
+      value={this.state.value}
+      answer={this.state.answer}
+      question={this.state.question}
+      isVisible={this.state.isVisible}
+      />
 
-      <a href={this.state.searchURL}>{this.state.searchURL}</a>
-
-      {this.state.question && <TriviaInfo question={this.state.question}/>}
-      </div>
+    </div>
   )
-}
-}
-
-export default App;
+ }
+    
+}     
+ export default App
